@@ -1,7 +1,10 @@
 function output = rbfKernel(x_i, x_j, dataset)
 
-persistent kappa2;
-if isempty(kappa2)
+persistent kappa2 origDataset;
+if isempty(origDataset)
+    origDataset = dataset;
+end
+if isempty(kappa2) || ~isequal(dataset, origDataset)
     s = 0;
     for i = 1:size(dataset, 1)
         for j = 1:size(dataset, 1)
