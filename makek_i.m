@@ -1,7 +1,12 @@
 function k_i = makek_i(i, dataset)
 
-persistent K;
-if isempty(K) K = nan(size(dataset, 1), size(dataset, 1)); end
+persistent K origDataset;
+if isempty(origDataset)
+    origDataset = dataset;
+end
+if isempty(K) || ~isequal(dataset, origDataset)
+    K = nan(size(dataset, 1), size(dataset, 1)); 
+end
 
 x_i = dataset(i, :);
 if isnan(K(:, i))
