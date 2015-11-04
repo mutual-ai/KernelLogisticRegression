@@ -1,5 +1,5 @@
-function [bestW, minRisk, Jw, Ws] = gradDesc(X, Y, lambda, stepSize, ...
-    numPointsForStochastic, timeLimitSecs, tolerance)
+function [bestW, minRisk, Jw, timeByIter, Ws] = gradDesc(X, Y, lambda, ...
+    stepSize, numPointsForStochastic, timeLimitSecs, tolerance)
 
 % Default tolerance: 1e-2 (from problem 5 description)
 if nargin < 7
@@ -32,6 +32,7 @@ while norm(grd) > tolerance && time <= timeLimitSecs
     
     finish = toc(start);
     time = time + finish;
+    timeByIter(iters) = time;
 end
 
 if numPointsForStochastic < size(X, 1)
