@@ -17,8 +17,9 @@ if nargin < 5
 end
 
 w = randn([size(X, 1) 1]) .* .1; % w is a column vector
-iters = 0; time = 0; grd = inf(size(w)); start = cputime;
+iters = 0; time = 0; grd = inf(size(w));
 while norm(grd) > tolerance && time <= timeLimitSecs
+    start = tic;
     iters = iters + 1;
     grd = findGradient(X, Y, w, lambda, numPointsForStochastic);
     w = w - (stepSize * grd);
@@ -29,7 +30,8 @@ while norm(grd) > tolerance && time <= timeLimitSecs
     
     fprintf('Jw = %d, norm(grd) = %d\n', Jw(iters), norm(grd));
     
-    time = (cputime - start)*60; % cputime given in minutes
+    finish = toc(start);
+    time = time + finish;
 end
 
 if numPointsForStochastic < size(X, 1)
