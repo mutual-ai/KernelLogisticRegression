@@ -1,4 +1,4 @@
-function [bestW, minRisk] = gradDesc(X, Y, lambda, stepSize, ...
+function [bestW, minRisk, Jw, Ws] = gradDesc(X, Y, lambda, stepSize, ...
     numPointsForStochastic, timeLimitSecs, tolerance)
 
 % Default tolerance: 1e-2 (from problem 5 description)
@@ -20,11 +20,15 @@ w = randn([1 size(X, 1)])' .* .1; % Check this?
 iters = 0; time = 0; grd = inf(size(w)); start = cputime;
 while norm(grd) > tolerance && time <= timeLimitSecs
     iters = iters + 1;
-    grd = findGradient(X, Y, w, numPointsForStochastic);
+    grd = findGradient(X, Y, w, lambda, numPointsForStochastic);
     w = w - (stepSize * grd);
+%     w = w + (stepSize * grd);
     
     Ws(iters, :) = w;
-    Jw(iters) = calculateRisk(X, Y, w, lambda)
+    Jw(iters) = calculateRisk(X, Y, w, lambda);
+    
+    fprintf('Jw = %d, norm(grd) = %d\n', Jw(iters), norm(grd));
+    
     time = (cputime - start)*60; % cputime given in minutes
 end
 
