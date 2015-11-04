@@ -1,6 +1,5 @@
 function acc = testAccuracy(w, TestX, TestY)
 
-[~] = makek_i(1, TestX, true); % Clear persistent K
 correct = 0;
 for i = 1:size(TestX, 1)
     x_i = TestX(i, :);
@@ -10,6 +9,7 @@ for i = 1:size(TestX, 1)
     % data (if not, remove clearing above)
     k_i = makek_i(i, TestX);
     probability = sigmoid(w' * k_i);
+    
     if probability > .5
         guess = 1;
     else
