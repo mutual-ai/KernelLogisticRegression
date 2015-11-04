@@ -1,13 +1,13 @@
-function acc = testAccuracy(w, TestX, TestY)
+function acc = testAccuracy(w, TrainX, TestX, TestY)
 
 correct = 0;
 for i = 1:size(TestX, 1)
     x_i = TestX(i, :);
     y_i = TestY(i, :);
     
-    % Check Piazza question to make sure ks should be computed from testing
-    % data (if not, remove clearing above)
-    k_i = makek_i(i, TestX);
+    % Check Piazza question to make sure ks should be computed from
+    % training data
+    k_i = makek_i(-1, TrainX, false, x_i);
     probability = sigmoid(w' * k_i);
     
     if probability > .5
