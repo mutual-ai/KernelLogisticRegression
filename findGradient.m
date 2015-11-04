@@ -10,7 +10,7 @@ end
 
 N = size(X, 1); % Number of data points (rows of X)
 stochasticPtsToTake = randperm(N, p);
-sm = zeros([1 length(w)]);
+sm = zeros([length(w) 1]);
 % sm = 0;
 for pp = 1:p
     i = stochasticPtsToTake(pp);
@@ -18,13 +18,17 @@ for pp = 1:p
     y_i = Y(i);
     k_i = makek_i(i, X);
     
+    numer = y_i * k_i * exp(-y_i * w' * k_i);
+    denom = 1 + exp(-y_i * w' * k_i);
+    sm = sm + numer / denom;
 %     sm = sm + 1 - sigmoid(y_i * w' * k_i) + 2 * lambda * w';
 %     sm = sm + 1 - sigmoid(y_i * w' * k_i);
-    for j = 1:length(w)
-%         sm(j) = sm(j) + 1 - sigmoid(y_i * w' * k_i) + 2 * lambda * w(j);
-        sm(j) = sm(j) + 1 - sigmoid(y_i * w(j) * k_i(j));
-    end
+
+%     for j = 1:length(w)
+% %         sm(j) = sm(j) + 1 - sigmoid(y_i * w' * k_i) + 2 * lambda * w(j);
+%         sm(j) = sm(j) + 1 - sigmoid(y_i * w(j) * k_i(j));
+%     end
 end
 
-gradient = (-1/p * sm)' + 2 * lambda * w;
+gradient = -1/p * sm + 2 * lambda * w;
 end
