@@ -4,7 +4,6 @@ function k_i = makek_i(i, dataset, clearPersistent)
 persistent K
 if isempty(K) || (nargin > 2 && clearPersistent)
     K = nan(size(dataset, 1), size(dataset, 1)); 
-    [~] = rbfKernel(dataset(1, :), dataset(2, :), dataset, true);
 end
 
 x_i = dataset(i, :);
