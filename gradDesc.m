@@ -16,7 +16,7 @@ if nargin < 5
     numPointsForStochastic = size(X, 1);
 end
 
-w = randn([1 size(X, 1)])' .* .1; % Check this?
+w = randn([size(X, 1) 1]) .* .1; % w is a column vector
 iters = 0; time = 0; grd = inf(size(w)); start = cputime;
 while norm(grd) > tolerance && time <= timeLimitSecs
     iters = iters + 1;
@@ -24,7 +24,7 @@ while norm(grd) > tolerance && time <= timeLimitSecs
     w = w - (stepSize * grd);
 %     w = w + (stepSize * grd);
     
-    Ws(iters, :) = w;
+    Ws(:, iters) = w; % each w is a column
     Jw(iters) = calculateRisk(X, Y, w, lambda);
     
     fprintf('Jw = %d, norm(grd) = %d\n', Jw(iters), norm(grd));
@@ -35,7 +35,7 @@ end
 if numPointsForStochastic < size(X, 1)
     % If doing SGD, find the w that gave the best risk
     [minRisk, minRiskIdx] = min(Jw);
-    bestW = Ws(minRiskIdx);
+    bestW = Ws(:, minRiskIdx);
 else
     bestW = w;
     minRisk = Jw(iters);
